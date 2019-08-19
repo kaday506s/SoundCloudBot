@@ -4,7 +4,7 @@ import telebot
 from telebot import types
 import getmusicsound
 import emojis
-import youtube_dow
+import parse_music_text
 import threading
 
 
@@ -20,7 +20,7 @@ def create_btn():
     return markup
 
 
-# create btn Author
+# create btn list music
 def create_btn_data(data):
     markup = types.InlineKeyboardMarkup()
     for i in data:
@@ -28,16 +28,15 @@ def create_btn_data(data):
     return markup
 
 
-# create btn Author
+# create list music
 def create_text_data(data):
-    text, id = "", 1
+    text = ""
     for i in data:
-        text += str(id)+' : '+i['name']+"\n"
-        id += 1
+        text += str(i['id'])+' : '+i['name']+"\n"
     return text
 
 
-# send audio
+# send audio file
 def send_audio(chat_id, url):
     # send wait
     wait_m = bot.send_message(chat_id,
@@ -54,8 +53,11 @@ def send_audio(chat_id, url):
 
 #  function to find sound
 def data_finder(text, chat_id):
-    data = youtube_dow.search_music(text)
+    # find list music from SC
+    data = parse_music_text.search_music(text)
+    # Create list
     text = create_text_data(data)
+    # send result with list music
     bot.send_message(chat_id,
                      text,
                      reply_markup=create_btn_data(data))
@@ -96,7 +98,7 @@ def url(message):
                     )
     return None
 
-# END
+
 @bot.message_handler()
 def function_name(message):
     print(message.text)
