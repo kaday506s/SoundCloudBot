@@ -12,7 +12,7 @@ def down_load(url):
 
     # Get token
     token = str(answer.headers['set-cookie']).split(';')[0].split('=')[1]
-    print(token)
+    # print(token)
     # headers
     payload = {
         "Host": "sclouddownloader.com",
